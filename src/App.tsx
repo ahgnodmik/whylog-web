@@ -7,6 +7,7 @@ import DetailPage from './pages/DetailPage'
 import ReviewPage from './pages/ReviewPage'
 import InsightsPage from './pages/InsightsPage'
 import MapPage from './pages/MapPage'
+import PrintPage from './pages/PrintPage'
 import DataPage from './pages/DataPage'
 import SharePage from './pages/SharePage'
 
@@ -39,6 +40,7 @@ export default function App() {
             <Route path="/map" element={<MapPage />} />
             <Route path="/insights" element={<InsightsPage />} />
             <Route path="/data" element={<DataPage />} />
+            <Route path="/print" element={<PrintPage />} />
             <Route path="/s/:data" element={<SharePage />} />
           </Routes>
         </main>

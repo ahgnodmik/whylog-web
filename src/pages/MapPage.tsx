@@ -10,7 +10,7 @@ import {
   type SimulationNodeDatum,
 } from 'd3-force'
 import { S, categoryLabel, formatDate, outcomeLabel } from '../i18n'
-import { useDecisions } from '../store'
+import { projectNames, useDecisions } from '../store'
 import { CATEGORIES, isReviewDue, type Decision, type DecisionCategory } from '../types'
 
 const CATEGORY_COLORS: Record<DecisionCategory, string> = {
@@ -30,6 +30,9 @@ type Tab = 'timeline' | 'network'
 export default function MapPage() {
   const decisions = useDecisions()
   const [tab, setTab] = useState<Tab>('timeline')
+  const [project, setProject] = useState<string | null>(null)
+  const projects = projectNames(decisions)
+  const visible = project === null ? decisions : decisions.filter((d) => d.project === project)
 
   return (
     <>
@@ -49,12 +52,32 @@ export default function MapPage() {
         </button>
       </div>
 
-      {decisions.length === 0 ? (
+      {projects.length > 0 && (
+        <div className="filters" style={{ marginTop: 0 }}>
+          <button
+            className={`chip ${project === null ? 'selected' : ''}`}
+            onClick={() => setProject(null)}
+          >
+            {S.allProjects}
+          </button>
+          {projects.map((p) => (
+            <button
+              key={p}
+              className={`chip ${project === p ? 'selected' : ''}`}
+              onClick={() => setProject(project === p ? null : p)}
+            >
+              # {p}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {visible.length === 0 ? (
         <div className="empty-state">{S.mapEmpty}</div>
       ) : tab === 'timeline' ? (
-        <Timeline decisions={decisions} />
+        <Timeline decisions={visible} />
       ) : (
-        <Network decisions={decisions} />
+        <Network decisions={visible} />
       )}
     </>
   )
@@ -96,6 +119,7 @@ function Timeline({ decisions }: { decisions: Decision[] }) {
               <div className="timeline-body card">
                 <h3>{d.title}</h3>
                 <div className="meta">
+                  {d.project && <span className="badge badge-project"># {d.project}</span>}
                   <span className="badge badge-category">{categoryLabel(d.category)}</span>
                   {d.status === 'reviewed' && d.outcome && (
                     <span className="badge badge-reviewed">{outcomeLabel(d.outcome.status)}</span>
@@ -147,6 +171,16 @@ function Network({ decisions }: { decisions: Decision[] }) {
         const other = byId.get(rid)
         if (other) addLink(n, other, true)
       }
+    }
+    // Same-project chain (by time) — projects pull tighter than categories.
+    const byProject = new Map<string, GraphNode[]>()
+    for (const n of nodes) {
+      if (!n.d.project) continue
+      byProject.set(n.d.project, [...(byProject.get(n.d.project) ?? []), n])
+    }
+    for (const group of byProject.values()) {
+      group.sort((a, b) => a.d.createdAt.localeCompare(b.d.createdAt))
+      for (let i = 1; i < group.length; i++) addLink(group[i - 1], group[i], true)
     }
     // Same-category chain (by time) — cluster hint without O(n²) edges.
     for (const cat of CATEGORIES) {

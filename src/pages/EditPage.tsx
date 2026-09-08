@@ -11,7 +11,7 @@ import {
   templateReasonHint,
   templateTitleHint,
 } from '../i18n'
-import { getDecision, upsertDecision, useDecisions } from '../store'
+import { getDecision, projectNames, upsertDecision, useDecisions } from '../store'
 import {
   CATEGORIES,
   REASON_TYPES,
@@ -58,6 +58,7 @@ export default function EditPage() {
   const [expectation, setExpectation] = useState(existing?.expectation ?? '')
   const [context, setContext] = useState(existing?.context ?? '')
   const [alternatives, setAlternatives] = useState(existing?.alternatives.join('\n') ?? '')
+  const [project, setProject] = useState(existing?.project ?? '')
   const [relatedIds, setRelatedIds] = useState<string[]>(existing?.relatedIds ?? [])
   const [relatedQuery, setRelatedQuery] = useState('')
   const [errors, setErrors] = useState<{ title?: string; reason?: string }>({})
@@ -112,6 +113,7 @@ export default function EditPage() {
         .filter(Boolean),
       outcome: existing?.outcome,
       relatedIds: relatedIds.length > 0 ? relatedIds : undefined,
+      project: project.trim() || undefined,
     }
     upsertDecision(decision)
     navigate(`/decision/${decision.id}`, { replace: true })
@@ -196,6 +198,25 @@ export default function EditPage() {
           </button>
         </div>
         <input type="date" value={reviewDate} onChange={(e) => setReviewDate(e.target.value)} />
+      </div>
+
+      <div className="field">
+        <label>
+          {S.projectLabel}
+          <div className="hint">{S.projectHint}</div>
+        </label>
+        <input
+          type="text"
+          list="project-names"
+          value={project}
+          maxLength={100}
+          onChange={(e) => setProject(e.target.value)}
+        />
+        <datalist id="project-names">
+          {projectNames(allDecisions).map((p) => (
+            <option key={p} value={p} />
+          ))}
+        </datalist>
       </div>
 
       <div className="field">

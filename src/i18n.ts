@@ -104,9 +104,19 @@ export const S = {
   ),
   relatedLabel: t('Related decisions', '관련 결정'),
   relatedSearchHint: t('Search decisions to link', '연결할 결정 검색'),
+  projectLabel: t('Project', '프로젝트'),
+  projectHint: t('Group decisions under a project (optional)', '프로젝트로 묶기 (선택)'),
+  noProject: t('No project', '프로젝트 없음'),
+  allProjects: t('All projects', '전체 프로젝트'),
 
   // Settings / data
   settings: t('Data', '데이터'),
+  exportPdf: t('Export PDF (timeline)', 'PDF 내보내기 (타임라인)'),
+  printHint: t(
+    'Use your browser print dialog and choose "Save as PDF".',
+    '브라우저 인쇄 창에서 "PDF로 저장"을 선택하세요.',
+  ),
+  print: t('Print / Save as PDF', '인쇄 / PDF로 저장'),
   exportJson: t('Export JSON', 'JSON 내보내기'),
   importJson: t('Import JSON', 'JSON 가져오기'),
   importDone: (added: number, updated: number) =>

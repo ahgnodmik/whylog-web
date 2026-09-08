@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { S } from '../i18n'
 import { exportJson, importJson, useDecisions } from '../store'
 import { useToast } from '../toast'
@@ -34,6 +35,9 @@ export default function DataPage() {
       <div className="notice">{S.localOnlyNote}</div>
 
       <div className="card" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+        <Link to="/print" className="btn">
+          {S.exportPdf}
+        </Link>
         <button className="btn" onClick={download} disabled={decisions.length === 0}>
           {S.exportJson} ({decisions.length})
         </button>

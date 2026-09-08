@@ -41,6 +41,7 @@ export default function DetailPage() {
       <h1 className="page-title">{d.title}</h1>
 
       <div className="meta" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 24 }}>
+        {d.project && <span className="badge badge-project"># {d.project}</span>}
         <span className="badge badge-category">{categoryLabel(d.category)}</span>
         {isReviewDue(d) && <span className="badge badge-due">{S.dueBadge}</span>}
         {d.status === 'reviewed' && (

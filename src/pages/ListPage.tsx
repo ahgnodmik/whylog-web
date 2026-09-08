@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { S, categoryLabel, formatDate } from '../i18n'
-import { useDecisions } from '../store'
+import { projectNames, useDecisions } from '../store'
 import { isReviewDue } from '../types'
 
 type Filter = 'all' | 'active' | 'due' | 'reviewed'
@@ -17,7 +17,9 @@ export default function ListPage() {
   const decisions = useDecisions()
   const navigate = useNavigate()
   const [filter, setFilter] = useState<Filter>('all')
+  const [project, setProject] = useState<string | null>(null)
   const [query, setQuery] = useState('')
+  const projects = projectNames(decisions)
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -28,6 +30,7 @@ export default function ListPage() {
         if (filter === 'reviewed') return d.status === 'reviewed'
         return true
       })
+      .filter((d) => project === null || d.project === project)
       .filter(
         (d) =>
           !q ||
@@ -35,7 +38,7 @@ export default function ListPage() {
           d.reason.toLowerCase().includes(q),
       )
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-  }, [decisions, filter, query])
+  }, [decisions, filter, project, query])
 
   const dueCount = decisions.filter(isReviewDue).length
 
@@ -73,6 +76,26 @@ export default function ListPage() {
         ))}
       </div>
 
+      {projects.length > 0 && (
+        <div className="filters" style={{ marginTop: 0 }}>
+          <button
+            className={`chip ${project === null ? 'selected' : ''}`}
+            onClick={() => setProject(null)}
+          >
+            {S.allProjects}
+          </button>
+          {projects.map((p) => (
+            <button
+              key={p}
+              className={`chip ${project === p ? 'selected' : ''}`}
+              onClick={() => setProject(project === p ? null : p)}
+            >
+              # {p}
+            </button>
+          ))}
+        </div>
+      )}
+
       {filtered.length === 0 ? (
         <div className="empty-state">{S.emptyList}</div>
       ) : (
@@ -80,6 +103,7 @@ export default function ListPage() {
           <Link key={d.id} to={`/decision/${d.id}`} className="card decision-item">
             <h3>{d.title}</h3>
             <div className="meta">
+              {d.project && <span className="badge badge-project"># {d.project}</span>}
               <span className="badge badge-category">{categoryLabel(d.category)}</span>
               {isReviewDue(d) && <span className="badge badge-due">{S.dueBadge}</span>}
               {d.status === 'reviewed' && (

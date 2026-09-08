@@ -44,6 +44,10 @@ export function useDecisions(): Decision[] {
   return useSyncExternalStore(subscribe, () => decisions)
 }
 
+export function projectNames(items: Decision[]): string[] {
+  return [...new Set(items.map((d) => d.project).filter((p): p is string => Boolean(p)))].sort()
+}
+
 export function getDecision(id: string): Decision | undefined {
   return decisions.find((d) => d.id === id)
 }

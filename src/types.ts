@@ -93,6 +93,7 @@ export interface Decision {
   alternatives: string[]
   outcome?: Outcome
   relatedIds?: string[]
+  project?: string
 }
 
 export type DecisionTemplate = 'basic' | 'product' | 'career' | 'purchase'

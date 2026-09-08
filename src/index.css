@@ -211,6 +211,11 @@ select {
   color: var(--accent);
 }
 
+.badge-project {
+  background: color-mix(in srgb, var(--text-soft) 12%, transparent);
+  color: var(--text-soft);
+}
+
 /* Forms */
 .field {
   margin-bottom: 22px;
@@ -599,5 +604,114 @@ select {
 @media (min-width: 760px) {
   .desktop-new {
     display: inline-flex;
+  }
+}
+
+/* Print / PDF timeline export */
+.print-page {
+  max-width: 680px;
+}
+
+.print-doc-title {
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  margin: 24px 0 2px;
+}
+
+.print-doc-sub {
+  color: var(--text-soft);
+  font-size: 13px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--text);
+}
+
+.print-entry {
+  position: relative;
+  padding: 0 0 22px 20px;
+  border-left: 2px solid var(--border);
+  break-inside: avoid;
+}
+
+.print-entry::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.print-date {
+  font-size: 12px;
+  color: var(--text-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.print-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 2px 0;
+}
+
+.print-meta {
+  font-size: 12px;
+  color: var(--text-soft);
+  margin-bottom: 6px;
+}
+
+.print-body {
+  font-size: 13.5px;
+}
+
+.print-body p {
+  margin: 4px 0;
+}
+
+.print-body strong {
+  font-weight: 600;
+}
+
+.print-outcome {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--accent-soft);
+  border-radius: 8px;
+}
+
+.print-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+@media print {
+  .no-print,
+  .topbar,
+  .fab {
+    display: none !important;
+  }
+
+  :root {
+    --bg: #fff;
+    --surface: #fff;
+    --text: #000;
+    --text-soft: #555;
+    --border: #ccc;
+    --accent: #3d5a80;
+    --accent-soft: #eef2f7;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .container {
+    max-width: none;
+    padding: 0;
   }
 }
