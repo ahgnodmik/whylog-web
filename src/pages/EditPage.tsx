@@ -11,7 +11,7 @@ import {
   templateReasonHint,
   templateTitleHint,
 } from '../i18n'
-import { getDecision, upsertDecision } from '../store'
+import { getDecision, upsertDecision, useDecisions } from '../store'
 import {
   CATEGORIES,
   REASON_TYPES,
@@ -39,6 +39,7 @@ function daysFromNow(days: number): string {
 export default function EditPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const allDecisions = useDecisions()
   const existing = id ? getDecision(id) : undefined
   const isEdit = Boolean(existing)
 
@@ -57,7 +58,21 @@ export default function EditPage() {
   const [expectation, setExpectation] = useState(existing?.expectation ?? '')
   const [context, setContext] = useState(existing?.context ?? '')
   const [alternatives, setAlternatives] = useState(existing?.alternatives.join('\n') ?? '')
+  const [relatedIds, setRelatedIds] = useState<string[]>(existing?.relatedIds ?? [])
+  const [relatedQuery, setRelatedQuery] = useState('')
   const [errors, setErrors] = useState<{ title?: string; reason?: string }>({})
+
+  const relatedCandidates = allDecisions.filter((d) => {
+    if (d.id === existing?.id) return false
+    const q = relatedQuery.trim().toLowerCase()
+    return relatedIds.includes(d.id) || !q || d.title.toLowerCase().includes(q)
+  })
+
+  function toggleRelated(rid: string) {
+    setRelatedIds((prev) =>
+      prev.includes(rid) ? prev.filter((x) => x !== rid) : [...prev, rid],
+    )
+  }
 
   function applyTemplate(tpl: DecisionTemplate) {
     setTemplate(tpl)
@@ -96,6 +111,7 @@ export default function EditPage() {
         .map((s) => s.trim())
         .filter(Boolean),
       outcome: existing?.outcome,
+      relatedIds: relatedIds.length > 0 ? relatedIds : undefined,
     }
     upsertDecision(decision)
     navigate(`/decision/${decision.id}`, { replace: true })
@@ -246,6 +262,30 @@ export default function EditPage() {
               onChange={(e) => setContext(e.target.value)}
             />
           </div>
+          {allDecisions.length > (isEdit ? 1 : 0) && (
+            <div className="field">
+              <label>{S.relatedLabel}</label>
+              <input
+                type="text"
+                placeholder={S.relatedSearchHint}
+                value={relatedQuery}
+                onChange={(e) => setRelatedQuery(e.target.value)}
+              />
+              <div className="related-list">
+                {relatedCandidates.slice(0, 30).map((d) => (
+                  <button
+                    key={d.id}
+                    type="button"
+                    className={`related-option ${relatedIds.includes(d.id) ? 'selected' : ''}`}
+                    onClick={() => toggleRelated(d.id)}
+                  >
+                    <span>{relatedIds.includes(d.id) ? '✓' : '·'}</span>
+                    <span>{d.title}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </>
       )}
 

@@ -92,6 +92,7 @@ export interface Decision {
   reasonTypes: ReasonType[]
   alternatives: string[]
   outcome?: Outcome
+  relatedIds?: string[]
 }
 
 export type DecisionTemplate = 'basic' | 'product' | 'career' | 'purchase'

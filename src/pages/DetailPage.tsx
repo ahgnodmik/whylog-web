@@ -87,6 +87,21 @@ export default function DetailPage() {
             <p>{d.context}</p>
           </div>
         )}
+        {(d.relatedIds?.length ?? 0) > 0 && (
+          <div className="detail-section">
+            <h4>{S.relatedLabel}</h4>
+            <div className="chips">
+              {d.relatedIds!.map((rid) => {
+                const rel = decisions.find((x) => x.id === rid)
+                return rel ? (
+                  <Link key={rid} to={`/decision/${rid}`} className="chip">
+                    {rel.title}
+                  </Link>
+                ) : null
+              })}
+            </div>
+          </div>
+        )}
         <div className="detail-section" style={{ marginBottom: 0 }}>
           <h4>{S.createdOn}</h4>
           <p>

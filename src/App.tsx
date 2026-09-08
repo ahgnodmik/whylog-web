@@ -6,6 +6,7 @@ import EditPage from './pages/EditPage'
 import DetailPage from './pages/DetailPage'
 import ReviewPage from './pages/ReviewPage'
 import InsightsPage from './pages/InsightsPage'
+import MapPage from './pages/MapPage'
 import DataPage from './pages/DataPage'
 import SharePage from './pages/SharePage'
 
@@ -22,6 +23,7 @@ export default function App() {
               <NavLink to="/" end>
                 {S.filterAll}
               </NavLink>
+              <NavLink to="/map">{S.map}</NavLink>
               <NavLink to="/insights">{S.insights}</NavLink>
               <NavLink to="/data">{S.settings}</NavLink>
             </nav>
@@ -34,6 +36,7 @@ export default function App() {
             <Route path="/decision/:id" element={<DetailPage />} />
             <Route path="/decision/:id/edit" element={<EditPage />} />
             <Route path="/decision/:id/review" element={<ReviewPage />} />
+            <Route path="/map" element={<MapPage />} />
             <Route path="/insights" element={<InsightsPage />} />
             <Route path="/data" element={<DataPage />} />
             <Route path="/s/:data" element={<SharePage />} />

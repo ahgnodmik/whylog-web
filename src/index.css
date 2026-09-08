@@ -376,6 +376,132 @@ select {
   border-radius: 999px;
 }
 
+/* Timeline */
+.timeline-month {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 8px;
+}
+
+.timeline-month::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: -8px;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-month:last-child::before {
+  bottom: 12px;
+}
+
+.timeline-month-label {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-soft);
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.timeline-month-label::before {
+  content: '';
+  position: absolute;
+  left: -21px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-soft);
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.timeline-dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-top: 20px;
+  margin-left: -30px;
+  border: 2px solid var(--bg);
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-body {
+  flex: 1;
+  transition: border-color 0.15s;
+}
+
+.timeline-item:hover .timeline-body {
+  border-color: var(--accent);
+}
+
+.timeline-body h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.timeline-body .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+/* Network */
+.network-svg {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* Related picker */
+.related-list {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-top: 8px;
+}
+
+.related-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.related-option:last-child {
+  border-bottom: none;
+}
+
+.related-option:hover {
+  background: var(--accent-soft);
+}
+
+.related-option.selected {
+  color: var(--accent);
+  font-weight: 600;
+}
+
 /* Misc */
 .page-title {
   font-size: 22px;

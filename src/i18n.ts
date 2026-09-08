@@ -93,6 +93,18 @@ export const S = {
       `인사이트를 보려면 회고를 ${n}개 더 작성하세요.`,
     ),
 
+  // Map (timeline + network)
+  map: t('Map', '맵'),
+  timelineTab: t('Timeline', '타임라인'),
+  networkTab: t('Network', '네트워크'),
+  mapEmpty: t('Record a few decisions to see them here.', '결정을 몇 개 기록하면 여기서 볼 수 있어요.'),
+  networkHint: t(
+    'Solid lines: linked decisions · faint lines: same category. Click a node to open it.',
+    '진한 선: 연결된 결정 · 흐린 선: 같은 카테고리. 노드를 클릭하면 열려요.',
+  ),
+  relatedLabel: t('Related decisions', '관련 결정'),
+  relatedSearchHint: t('Search decisions to link', '연결할 결정 검색'),
+
   // Settings / data
   settings: t('Data', '데이터'),
   exportJson: t('Export JSON', 'JSON 내보내기'),
