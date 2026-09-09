@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { S, categoryLabel, formatDate } from '../i18n'
 import AdSlot from '../components/AdSlot'
 import { ADSENSE_SLOT_LIST } from '../config'
@@ -19,9 +19,14 @@ export default function ListPage() {
   const decisions = useDecisions()
   const navigate = useNavigate()
   const [filter, setFilter] = useState<Filter>('all')
-  const [project, setProject] = useState<string | null>(null)
+  const [params, setParams] = useSearchParams()
+  const project = params.get('project')
   const [query, setQuery] = useState('')
   const projects = projectNames(decisions)
+
+  function setProject(p: string | null) {
+    setParams(p ? { project: p } : {}, { replace: true })
+  }
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()

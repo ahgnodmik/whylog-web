@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   forceCenter,
   forceCollide,
@@ -29,9 +29,21 @@ type Tab = 'timeline' | 'network'
 
 export default function MapPage() {
   const decisions = useDecisions()
-  const [tab, setTab] = useState<Tab>('timeline')
-  const [project, setProject] = useState<string | null>(null)
+  const [params, setParams] = useSearchParams()
+  const tab: Tab = params.get('tab') === 'network' ? 'network' : 'timeline'
+  const project = params.get('project')
   const projects = projectNames(decisions)
+
+  function update(next: { tab?: Tab; project?: string | null }) {
+    const p: Record<string, string> = {}
+    const t = next.tab ?? tab
+    const proj = next.project === undefined ? project : next.project
+    if (t !== 'timeline') p.tab = t
+    if (proj) p.project = proj
+    setParams(p, { replace: true })
+  }
+  const setTab = (t: Tab) => update({ tab: t })
+  const setProject = (p: string | null) => update({ project: p })
   const visible = project === null ? decisions : decisions.filter((d) => d.project === project)
 
   return (

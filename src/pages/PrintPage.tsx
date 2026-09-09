@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { S, categoryLabel, outcomeLabel, reasonTypeLabel, sameAgainLabel } from '../i18n'
 import { projectNames, useDecisions } from '../store'
 import type { Decision } from '../types'
@@ -69,7 +70,10 @@ function Entry({ d }: { d: Decision }) {
 export default function PrintPage() {
   const decisions = useDecisions()
   const projects = projectNames(decisions)
-  const [project, setProject] = useState<string | 'all'>('all')
+  const [params, setParams] = useSearchParams()
+  const project = params.get('project') ?? 'all'
+  const setProject = (p: string | 'all') =>
+    setParams(p === 'all' ? {} : { project: p }, { replace: true })
 
   const sorted = useMemo(
     () =>
