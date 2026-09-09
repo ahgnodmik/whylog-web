@@ -127,6 +127,19 @@ export const S = {
     '모든 데이터는 이 브라우저에만 저장돼요. 정기적으로 내보내기로 백업하세요.',
   ),
 
+  // License / remove ads
+  removeAdsTitle: t('Remove ads', '광고 제거'),
+  removeAdsBody: t(
+    'One-time purchase removes ads in this browser. Enter the license key from your receipt email.',
+    '일회성 결제로 이 브라우저에서 광고가 사라져요. 결제 후 이메일로 받은 라이선스 키를 입력하세요.',
+  ),
+  buyRemoveAds: t('Buy (remove ads)', '광고 제거 구매'),
+  licenseKeyHint: t('License key', '라이선스 키'),
+  activate: t('Activate', '활성화'),
+  activateFailed: t('Activation failed. Check the key.', '활성화 실패. 키를 확인하세요.'),
+  licenseActive: t('Ads removed — thank you for your support!', '광고 제거됨 — 후원 감사해요!'),
+  deactivate: t('Deactivate on this browser', '이 브라우저에서 해제'),
+
   // Shared decision import
   sharedTitle: t('Shared decision', '공유된 결정'),
   sharedImport: t('Add to my log', '내 기록에 추가'),

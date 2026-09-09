@@ -1,3 +1,5 @@
+import AdSlot from '../components/AdSlot'
+import { ADSENSE_SLOT_INSIGHTS } from '../config'
 import { S, reasonTypeLabel } from '../i18n'
 import { useDecisions } from '../store'
 import { MIN_REVIEWS_FOR_INSIGHTS, isReviewDue, type ReasonType } from '../types'
@@ -94,6 +96,8 @@ export default function InsightsPage() {
           )}
         </>
       )}
+
+      <AdSlot slot={ADSENSE_SLOT_INSIGHTS} />
     </>
   )
 }

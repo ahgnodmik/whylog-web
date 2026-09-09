@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { S, categoryLabel, formatDate } from '../i18n'
+import AdSlot from '../components/AdSlot'
+import { ADSENSE_SLOT_LIST } from '../config'
 import { projectNames, useDecisions } from '../store'
 import { isReviewDue } from '../types'
 
@@ -117,6 +119,8 @@ export default function ListPage() {
           </Link>
         ))
       )}
+
+      <AdSlot slot={ADSENSE_SLOT_LIST} />
 
       <button className="fab" aria-label={S.newDecision} onClick={() => navigate('/new')}>
         +
